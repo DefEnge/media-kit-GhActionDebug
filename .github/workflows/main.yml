@@ -56,7 +56,7 @@ jobs:
       - name: Zip File
         run: |
           cd media_kit_test
-          cd build/macos/Build/Products/Release; 7z a ../../../../../build.zip media_kit_test.app; cd -
+          cd build/macos/Build/Products/Release; 7z a ../../../../../build.7z media_kit_test.app; cd -
 
       - name: Upload Release Asset
         id: upload-release-asset
@@ -67,4 +67,4 @@ jobs:
           upload_url: ${{ needs.create_release.outputst.upload_url }}
           asset_path: ./media_kit_test/build.zip
           asset_name: Stronzflix MacOS - arm.zip
-          asset_content_type: application/zip
+          asset_content_type: application/x-7z-compressed
