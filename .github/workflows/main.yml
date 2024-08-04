@@ -49,6 +49,7 @@ jobs:
 
       - name: Build MacOS App
         run: |
+          cd media_kit_test
           flutter config --enable-macos-desktop
           flutter build macos --release
 
