@@ -30,41 +30,32 @@ jobs:
           draft: true
           prerelease: false
 
-  build_macos:
-    name: Build MacOS
-    needs: create_release
-    runs-on: macos-14
+  macos:
+    name: testapp
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: media_kit_test
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download Flutter
-        uses: subosito/flutter-action@v2
+      - uses: actions/checkout@v2
         with:
-          flutter-version: "3.22.3"
+          submodules: "true"
+      - uses: subosito/flutter-action@v2
+        with:
           channel: "stable"
           cache: true
-          cache-key: "flutter-macos"
-          cache-path: "${{ runner.tool_cache }}/flutter/macos"
-
-      - name: Build MacOS App
-        run: |
-          cd media_kit_test
-          flutter config --enable-macos-desktop
-          flutter build macos --release
-
-      - name: Zip File
-        run: |
-          cd media_kit_test
-          cd build/macos/Build/Products/Release; zip -r ../../../../../build.zip media_kit_test.app; cd -
-
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: flutter pub get
+      - run: flutter build macos --verbose
+      - run: 7z a media_kit_test_macos_universal.7z build/macos/Build/Products/Release/media_kit_test.app
+      - uses: actions/upload-artifact@v1
         with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: ./media_kit_test/build.zip
-          asset_name: Stronzflix MacOS - arm.zip
-          asset_content_type: application/zip
+          name: media_kit_test_macos_universal
+          path: media_kit_test/media_kit_test_macos_universal.7z
+      - uses: softprops/action-gh-release@v1
+        if: github.ref == 'refs/heads/main'
+        with:
+          draft: true
+          prerelease: false
+          tag_name: "vnext"
+          files: |
+            media_kit_test/media_kit_test_macos_universal.7z
