@@ -55,6 +55,7 @@ jobs:
 
       - name: Zip File
         run: |
+          cd media_kit_test
           cd build/macos/Build/Products/Release; zip -r ../../../../../build.zip media_kit_test.app; cd -
 
       - name: Upload Release Asset
