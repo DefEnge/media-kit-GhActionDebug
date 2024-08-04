@@ -64,7 +64,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.outputst.upload_url }}
-          asset_path: ./media_kit_test/build.zip
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          asset_path: ./media_kit_test/build.7z
           asset_name: Stronzflix MacOS - arm.zip
           asset_content_type: application/x-7z-compressed
