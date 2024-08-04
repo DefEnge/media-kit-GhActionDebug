@@ -55,7 +55,7 @@ jobs:
 
       - name: Zip File
         run: |
-          cd build/macos/Build/Products/Release; zip -r ../../../../../build.zip stronzflix.app; cd -
+          cd build/macos/Build/Products/Release; zip -r ../../../../../build.zip media_kit_test.app; cd -
 
       - name: Upload Release Asset
         id: upload-release-asset
